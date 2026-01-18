@@ -34,8 +34,8 @@ Setup
  └─ Environment         Run 'pnpx vercel env pull'
 
 Commands
-  pnpm                  # Manage Node.js dependencies
-  dev                   # Start the Next.js development server
+  pnpm install          # Install Node.js dependencies
+  pnpm run dev          # Start the Next.js development server
 ```
 
 ## Usage
@@ -54,10 +54,15 @@ inputs = {
 brief = shell-brief.lib.mkShellBrief {
   inherit pkgs;
 
+  # The banner is printed at the top of the brief.
+  # Use it to print a recognizable introduction for your project.
   banner = ''
     ${pkgs.figlet}/bin/figlet Example Project
   '';
 
+  # Setup steps that need to be completed to allow working on the project.
+  # Each condition is a shell expression that must evaluate to true.
+  # If it fails, the suggestion is shown to the user.
   setup = [
     {
       name = "Dependencies";
@@ -76,13 +81,15 @@ brief = shell-brief.lib.mkShellBrief {
     }
   ];
 
+  # Commands, tools, scripts that are important to be aware.
+  # These can be provided by the buildInputs, custom scripts, shell alias or through other means.
   commands = [
     {
       name = "pnpm";
       help = "Manage Node.js dependencies";
     }
     {
-      name = "dev";
+      name = "pnpm run dev";
       help = "Start the Next.js development server";
     }
   ];
