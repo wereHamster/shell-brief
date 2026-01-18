@@ -15,9 +15,9 @@ And also what tools and other commands the dev shell makes available.
 
 This nix library provides a function to generate a script that prints the brief.
 
-## Example
-
-Below is an example what you might see when you enter the project folder:
+Below is an example what you might see when you enter the project folder.
+In a real terminal, the output would be nicely colored.
+Here in this readme it only shows black and white.
 
 ```
  _____                           _        ____            _           _
