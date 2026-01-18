@@ -19,7 +19,7 @@ This nix library provides a function to generate a script that prints the brief.
 
 Below is an example what you might see when you enter the project folder:
 
-```sh
+```
  _____                           _        ____            _           _
 | ____|_  ____ _ _ __ ___  _ __ | | ___  |  _ \ _ __ ___ (_) ___  ___| |_
 |  _| \ \/ / _` | '_ ` _ \| '_ \| |/ _ \ | |_) | '__/ _ \| |/ _ \/ __| __|
