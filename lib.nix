@@ -1,8 +1,6 @@
-{ pkgs }:
+{ }:
 
 let
-  lib = pkgs.lib;
-
   colors = {
     blue = "\\033[1;34m";
     dim = "\\033[0;2m";
@@ -10,17 +8,6 @@ let
     green = "\\033[0;32m";
     nc = "\\033[0m";
   };
-
-  padTo =
-    target: str:
-    let
-      strLen = builtins.stringLength str;
-      diff = target - strLen;
-      actualDiff = if diff > 0 then diff else 1;
-      spaces = lib.concatStrings (builtins.genList (_: " ") actualDiff);
-    in
-    "${str}${spaces}";
-
 in
 rec {
   mkShellBrief =
@@ -30,7 +17,7 @@ rec {
       setup ? [ ],
       commands ? [ ],
     }:
-    pkgs.writeShellScriptBin "brief" ''
+    kgs.writeShellScriptBin "brief" ''
       clear
 
       ${banner}
@@ -39,19 +26,32 @@ rec {
       echo
 
       ${mkSections {
-        inherit setup commands;
+        inherit pkgs setup commands;
       }}
     '';
 
   mkSections =
     {
+      pkgs,
       setup ? [ ],
       commands ? [ ],
     }:
     let
+      lib = pkgs.lib;
+      
       mkVarName = name: "status_" + (builtins.replaceStrings [ " " "-" "." ] [ "_" "_" "_" ] name);
       allSetupVars = map (item: mkVarName item.name) setup;
       okValue = "${colors.green}Ok${colors.nc}";
+
+      padTo =
+        target: str:
+        let
+          strLen = builtins.stringLength str;
+          diff = target - strLen;
+          actualDiff = if diff > 0 then diff else 1;
+          spaces = lib.concatStrings (builtins.genList (_: " ") actualDiff);
+        in
+        "${str}${spaces}";
     in
     ''
       # 1. State Calculation
