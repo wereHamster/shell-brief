@@ -37,3 +37,70 @@ Commands
   pnpm                  # Manage Node.js dependencies
   dev                   # Start the Next.js development server
 ```
+
+## Usage
+
+### 1. Add the library to your flake inputs
+
+```
+inputs = {
+  shell-brief.url = "github:wereHamster/shell-brief";
+};
+```
+
+### 2. Create the brief script
+
+```
+brief = shell-brief.lib.mkShellBrief {
+  inherit pkgs;
+
+  banner = ''
+    ${pkgs.figlet}/bin/figlet Example Project
+  '';
+
+  setup = [
+    {
+      name = "Dependencies";
+      condition = "[[ -d node_modules && node_modules -nt pnpm-lock.yaml ]]";
+      suggestion = "Run 'pnpm install'";
+    }
+    {
+      name = "Vercel Link";
+      condition = "[[ -d .vercel ]]";
+      suggestion = "Run 'pnpx vercel link'";
+    }
+    {
+      name = "Environment";
+      condition = "[[ -f .env.local ]]";
+      suggestion = "Run 'pnpx vercel env pull'";
+    }
+  ];
+
+  commands = [
+    {
+      name = "pnpm";
+      help = "Manage Node.js dependencies";
+    }
+    {
+      name = "dev";
+      help = "Start the Next.js development server";
+    }
+  ];
+};
+```
+
+### 3. Invoke the script in your dev shell hook
+
+```
+devShells.default = pkgs.mkShell {
+  buildInputs = [
+    pkgs.nodejs
+    pkgs.pnpm
+    pkgs.biome
+  ];
+
+  shellHook = ''
+    ${brief}/bin/brief
+  '';
+};
+```
