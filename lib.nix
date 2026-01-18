@@ -2,6 +2,7 @@
 
 let
   lib = pkgs.lib;
+
   colors = {
     blue = "\\033[1;34m";
     dim = "\\033[0;2m";
@@ -24,6 +25,7 @@ in
 rec {
   mkShellBrief =
     {
+      pkgs,
       banner,
       setup ? [ ],
       commands ? [ ],
