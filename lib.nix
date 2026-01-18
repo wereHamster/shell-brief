@@ -17,7 +17,7 @@ rec {
       setup ? [ ],
       commands ? [ ],
     }:
-    kgs.writeShellScriptBin "brief" ''
+    pkgs.writeShellScriptBin "brief" ''
       clear
 
       ${banner}
@@ -38,7 +38,7 @@ rec {
     }:
     let
       lib = pkgs.lib;
-      
+
       mkVarName = name: "status_" + (builtins.replaceStrings [ " " "-" "." ] [ "_" "_" "_" ] name);
       allSetupVars = map (item: mkVarName item.name) setup;
       okValue = "${colors.green}Ok${colors.nc}";
