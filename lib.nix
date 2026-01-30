@@ -98,9 +98,9 @@ rec {
           map (
             item:
             let
-              paddedName = padTo 22 item.name;
+              paddedName = padTo 20 item.name;
             in
-            "echo -e \"  ${paddedName}${colors.dim}# ${item.help}${colors.nc}\""
+            "echo -e \"  ${colors.dim}\$${colors.nc} ${paddedName}${colors.dim}# ${item.help}${colors.nc}\""
           ) commands
         )}
         echo
