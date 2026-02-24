@@ -42,7 +42,7 @@ Commands
 
 ### 1. Add the library to your flake inputs
 
-```
+```nix
 inputs = {
   shell-brief.url = "github:wereHamster/shell-brief";
 };
@@ -50,7 +50,7 @@ inputs = {
 
 ### 2. Create the brief script
 
-```
+```nix
 brief = shell-brief.lib.mkShellBrief {
   inherit pkgs;
 
@@ -98,7 +98,7 @@ brief = shell-brief.lib.mkShellBrief {
 
 ### 3. Invoke the script in your dev shell hook
 
-```
+```nix
 devShells.default = pkgs.mkShell {
   buildInputs = [
     pkgs.nodejs
