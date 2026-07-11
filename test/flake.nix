@@ -1,21 +1,20 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    flake-utils.url = "github:numtide/flake-utils";
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
-    { nixpkgs, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (
-      system:
-      let
-        pkgs = import nixpkgs {
-          inherit system;
-        };
+    { nixpkgs, systems, ... }:
+    let
+      forAllSystems =
+        function: nixpkgs.lib.genAttrs (import systems) (system: function nixpkgs.legacyPackages.${system});
 
-        lib = import ../lib.nix { };
+      lib = import ../lib.nix { };
 
-        brief = lib.mkShellBrief {
+      brief =
+        pkgs:
+        lib.mkShellBrief {
           inherit pkgs;
 
           banner = ''
@@ -52,13 +51,14 @@
             }
           ];
         };
-      in
-      {
-        devShells.default = pkgs.mkShell {
+    in
+    {
+      devShells = forAllSystems (pkgs: {
+        default = pkgs.mkShell {
           shellHook = ''
-            ${brief}/bin/brief
+            ${brief pkgs}/bin/brief
           '';
         };
-      }
-    );
+      });
+    };
 }
